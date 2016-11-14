@@ -1,0 +1,70 @@
+'/oauth/clients/':
+  post:
+    operationId: 'createProvider'
+    tags:
+      - 'providers'
+    description: 'Creates a provider id in the system'
+    summary: 'Creates a provider id in the system'
+    parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/CreateProviderRequest'
+    responses:
+      201:
+        description: 'In case of successful provider creation'
+  get:
+    operationId: 'getProviders'
+    tags:
+      - 'providers'
+    description: 'Returns a list of providers'
+    summary: 'Returns a list of providers'
+    responses:
+      200:
+        description: 'List of providers'
+        schema:
+          type: array
+          items:
+            $ref: '#/definitions/CreateProviderRequest'
+'/oauth/clients/{providerId}':
+  get:
+    operationId: 'getProvider'
+    tags:
+      - 'providers'
+    description: 'Returns a provider by providerId'
+    summary: 'Returns a provider by providerId'
+    parameters:
+      - $ref: '#/parameters/ProviderAlias'
+    responses:
+      200:
+        description: 'Returns a provider by its alias'
+        schema:
+          $ref: '#/definitions/CreateProviderRequest'
+  put:
+    operationId: 'updateProvider'
+    tags:
+      - 'providers'
+    description: 'Updates a provider by providerId'
+    summary: 'Updates a provider by providerId'
+    parameters:
+      - $ref: '#/parameters/ProviderAlias'
+      - name: body
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/CreateProviderRequest'
+    responses:
+      204:
+        description: 'In case of successful provider update'
+  delete:
+    operationId: 'removeProvider'
+    tags:
+      - 'providers'
+    description: 'Removes a provider by providerId'
+    summary: 'Removes a provider by providerId'
+    parameters:
+      - $ref: '#/parameters/ProviderAlias'
+    responses:
+      204:
+        description: 'In case of successful provider removal'

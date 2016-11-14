@@ -1,13 +1,14 @@
 package com.maiboroda.swagger
 
 import io.swagger.models.*
+import io.swagger.models.properties.UUIDProperty
 import org.hamcrest.CoreMatchers.notNullValue
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.hasSize
 import org.junit.Assert.assertThat
 import org.junit.Test
 
-class SwaggerKtTest {
+class SwaggerTest {
 
     @Test
     fun should_create_empty_spec() {
@@ -30,7 +31,7 @@ class SwaggerKtTest {
     @Test
     fun should_create_spec_with_info_contact() {
         val spec = swagger {
-            host = "https://maiboroda.com"
+            host = "maiboroda.com"
             info {
                 version = "1.0"
                 title = "Test API Specification"
@@ -82,18 +83,19 @@ class SwaggerKtTest {
         assertThat(spec.tags[1], equalTo(Tag().name("v1").description("First version of the API")))
     }
 
-/*    @Test
+    @Test
     fun should_create_spec_with_paths_post() {
         val spec = swagger {
             paths {
-                post {"/privatecustomers" ->
+                post("/token/{token}") {
                     summary = "Create private customer"
                     description = "You can create private customer data only after customerId initialization"
-                    *//*bodyParameters {
-                        parameter {"firstName"}
-                    }*//*
+                    tags = listOf("token", "bearer")
+                    //path("token", UUIDProperty())
                 }
             }
         }
-    }*/
+
+        assertThat(spec.getPath("/privatecustomers").post.summary, equalTo("Create private customer"))
+    }
 }

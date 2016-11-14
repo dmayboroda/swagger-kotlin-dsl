@@ -1,6 +1,7 @@
 package com.maiboroda.swagger
 
 import io.swagger.models.*
+import io.swagger.models.properties.Property
 
 fun Info.contact(init:Contact.()->Unit) {
     val contact = Contact()
@@ -51,10 +52,21 @@ fun Swagger.tags(init:Tags.()->Unit) {
     this.tags = tags.tags
 }
 
-class Paths()
+class Paths(val swagger:Swagger) {}
 
-fun Swagger.paths(init:Paths.(path:String)->Unit) {
+fun Paths.post(path:String, init:Operation.()->Unit) {
+    val operation = Operation()
+    operation.init()
+    this.swagger.path(path, Path().set("post", operation))
+}
 
+fun Operation.path(path:String, init:Property.() -> Unit) {
+
+}
+
+fun Swagger.paths(init:Paths.()->Unit) {
+    val paths = Paths(this)
+    paths.init()
 }
 
 fun swagger(init:Swagger.()->Unit):Swagger {

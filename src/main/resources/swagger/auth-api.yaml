@@ -1,0 +1,72 @@
+swagger: '2.0'
+info:
+  version: 1.0
+  title: Test API Specification
+  description: This is a small test API specification
+
+host: maiboroda.com
+schemes:
+ - http
+ - https
+consumes:
+  - application/json
+produces:
+  - application/json
+
+basePath: /v1/api/
+securityDefinitions:
+  adminBasicAuth:
+    type: basic
+    description: Authorization for admin user. Admin user must have a role `BACKOFFICE_ADMIN`.
+security:
+  - adminBasicAuth: []
+
+paths:
+  '/oauth/token/{tokenParam}':
+    put:
+      tags:
+        - 'private customer id'
+      security:
+        - providerBasic: []
+      description: 'Permanent customer id deactivation'
+      summary: 'Permanent customer id deactivation'
+      parameters:
+        - $ref: '#/parameters/TokenPath'
+        - name: body
+          in: body
+          schema:
+            $ref: '#/definitions/Principal'
+      responses:
+        204:
+          description: 'In case of successful customer id deactivation'
+    delete:
+      tags:
+        - 'private customer id'
+      security:
+        - providerBasic: []
+      description: 'Removes a bearer token of a customer'
+      summary: 'Removes a bearer token of a customer'
+      parameters:
+        - $ref: '#/parameters/TokenPath'
+        - name: body
+          in: body
+          schema:
+            $ref: '#/definitions/Principal'
+      responses:
+        204:
+          description: 'In case of successful token removal'
+
+parameters:
+  TokenPath:
+    name: tokenParam
+    in: path
+    required: true
+    type: string
+
+definitions:
+  Principal:
+      properties:
+        name:
+          type: string
+      required:
+        - name
