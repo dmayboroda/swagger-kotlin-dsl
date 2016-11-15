@@ -34,7 +34,9 @@ dependencies {
 
     compile group: 'io.swagger', name: 'swagger-core', version: '1.5.10'
     compile group: 'io.swagger', name: 'swagger-models', version: '1.5.10'
+
     compile group: 'io.swagger', name: 'swagger-parser', version: '1.0.23'
 
+    compile group: 'javax.validation', name: 'validation-api', version: '1.1.0.Final-redhat-1'
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }

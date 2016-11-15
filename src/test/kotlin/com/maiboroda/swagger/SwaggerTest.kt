@@ -91,11 +91,24 @@ class SwaggerTest {
                     summary = "Create private customer"
                     description = "You can create private customer data only after customerId initialization"
                     tags = listOf("token", "bearer")
-                    //path("token", UUIDProperty())
+                    path("token") {
+                        pattern = "xxxx-xxxx-xxxx"
+                    }
+                    //header("X-Header") {}
+                    //form()
+                    //cookie()
+                    //query()
+                    body(User::class.java) {
+                    }
                 }
             }
         }
 
-        assertThat(spec.getPath("/privatecustomers").post.summary, equalTo("Create private customer"))
+        assertThat(spec.getPath("/token/{token}").post.summary, equalTo("Create private customer"))
+        assertThat(spec.getPath("/token/{token}").post.parameters[0].name, equalTo("token"))
+        assertThat(spec.getPath("/token/{token}").post.parameters[0].required, equalTo(true))
+        assertThat(spec.getPath("/token/{token}").post.parameters[0].pattern, equalTo("xxxx-xxxx-xxxx"))
     }
+
+    data class User(val username:String, val password:String) {}
 }

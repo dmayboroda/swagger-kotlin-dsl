@@ -1,7 +1,8 @@
 package com.maiboroda.swagger
 
 import io.swagger.models.*
-import io.swagger.models.properties.Property
+import io.swagger.models.parameters.BodyParameter
+import io.swagger.models.parameters.PathParameter
 
 fun Info.contact(init:Contact.()->Unit) {
     val contact = Contact()
@@ -60,9 +61,24 @@ fun Paths.post(path:String, init:Operation.()->Unit) {
     this.swagger.path(path, Path().set("post", operation))
 }
 
-fun Operation.path(path:String, init:Property.() -> Unit) {
-
+fun Operation.path(pathVariable:String, init:PathParameter.() -> Unit) {
+    val parameter = PathParameter()
+    parameter.init()
+    parameter.name = pathVariable
+    this.addParameter(parameter)
 }
+
+fun <T> Operation.body(model:Class<T>, init:BodyParameter.() -> Unit) {
+    val parameter = BodyParameter()
+    parameter.init()
+    val modelImpl = ModelImpl()
+    model.declaredFields.forEach { m ->
+        modelImpl.addProperty(m.name, getProperty(m))
+    }
+    parameter.schema = modelImpl
+    this.addParameter(parameter)
+}
+
 
 fun Swagger.paths(init:Paths.()->Unit) {
     val paths = Paths(this)
