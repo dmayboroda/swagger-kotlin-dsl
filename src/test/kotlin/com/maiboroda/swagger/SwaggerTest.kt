@@ -111,4 +111,45 @@ class SwaggerTest {
     }
 
     data class User(val username:String, val password:String) {}
+
+    @Test
+    fun should_create_yml() {
+        val spec = swagger {
+            host = "maiboroda.com"
+            info {
+                version = "1.0"
+                title = "Test API Specification"
+                description = "This is a small test API specification"
+                termsOfService = "Terms"
+                contact {
+                    email = "mayboroda.de@yandex.ru"
+                    name = "Dmitiriy Mayboroda"
+                    url = "http://maiboroda.com"
+                }
+                license {
+                    name = "Apache 2.0"
+                    url = "https://www.apache.org/licenses/LICENSE-2.0"
+                }
+            }
+            paths {
+                post("/token/{token}") {
+                    summary = "Create private customer"
+                    description = "You can create private customer data only after customerId initialization"
+                    tags = listOf("token", "bearer")
+                    path("token") {
+                        pattern = "xxxx-xxxx-xxxx"
+                    }
+                    //header("X-Header") {}
+                    //form()
+                    //cookie()
+                    //query()
+                    body(User::class.java) {
+                    }
+                }
+            }
+        }
+
+        System.out.println(spec.toYml())
+        assertThat(spec.toYml(), notNullValue())
+    }
 }

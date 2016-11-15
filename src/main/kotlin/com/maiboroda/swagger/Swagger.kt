@@ -3,6 +3,7 @@ package com.maiboroda.swagger
 import io.swagger.models.*
 import io.swagger.models.parameters.BodyParameter
 import io.swagger.models.parameters.PathParameter
+import io.swagger.util.Yaml
 
 fun Info.contact(init:Contact.()->Unit) {
     val contact = Contact()
@@ -55,12 +56,26 @@ fun Swagger.tags(init:Tags.()->Unit) {
 
 class Paths(val swagger:Swagger) {}
 
+/**
+ * There is a  minimal required fields to setup for request calls:
+ * - at least one valid response
+ */
 fun Paths.post(path:String, init:Operation.()->Unit) {
     val operation = Operation()
     operation.init()
     this.swagger.path(path, Path().set("post", operation))
 }
 
+/**
+ * These are minimal required settings for Path parameter
+ * <code>
+ *     parameters:
+ *       - name: "token"
+ *         in: "path"
+ *         required: true
+ *         type: "integer"
+ *  </code>
+ */
 fun Operation.path(pathVariable:String, init:PathParameter.() -> Unit) {
     val parameter = PathParameter()
     parameter.init()
@@ -68,6 +83,9 @@ fun Operation.path(pathVariable:String, init:PathParameter.() -> Unit) {
     this.addParameter(parameter)
 }
 
+/**
+ * Swagger hub needs to have `name:body` explicitly defined for Body Parameters
+ */
 fun <T> Operation.body(model:Class<T>, init:BodyParameter.() -> Unit) {
     val parameter = BodyParameter()
     parameter.init()
@@ -83,6 +101,10 @@ fun <T> Operation.body(model:Class<T>, init:BodyParameter.() -> Unit) {
 fun Swagger.paths(init:Paths.()->Unit) {
     val paths = Paths(this)
     paths.init()
+}
+
+fun Swagger.toYml():String {
+    return Yaml.mapper().writeValueAsString(this)
 }
 
 fun swagger(init:Swagger.()->Unit):Swagger {
