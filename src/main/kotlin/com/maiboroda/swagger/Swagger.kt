@@ -1,8 +1,6 @@
 package com.maiboroda.swagger
 
 import io.swagger.models.*
-import io.swagger.models.parameters.BodyParameter
-import io.swagger.models.parameters.PathParameter
 import io.swagger.util.Yaml
 
 fun Info.contact(init:Contact.()->Unit) {
@@ -66,37 +64,13 @@ fun Paths.post(path:String, init:Operation.()->Unit) {
     this.swagger.path(path, Path().set("post", operation))
 }
 
-/**
- * These are minimal required settings for Path parameter
- * <code>
- *     parameters:
- *       - name: "token"
- *         in: "path"
- *         required: true
- *         type: "integer"
- *  </code>
- */
-fun Operation.path(pathVariable:String, init:PathParameter.() -> Unit) {
-    val parameter = PathParameter()
-    parameter.init()
-    parameter.name = pathVariable
-    this.addParameter(parameter)
-}
-
-/**
- * Swagger hub needs to have `name:body` explicitly defined for Body Parameters
- */
-fun <T> Operation.body(model:Class<T>, init:BodyParameter.() -> Unit) {
-    val parameter = BodyParameter()
-    parameter.init()
+fun <T> getModel(model: Class<T>): ModelImpl {
     val modelImpl = ModelImpl()
     model.declaredFields.forEach { m ->
         modelImpl.addProperty(m.name, getProperty(m))
     }
-    parameter.schema = modelImpl
-    this.addParameter(parameter)
+    return modelImpl
 }
-
 
 fun Swagger.paths(init:Paths.()->Unit) {
     val paths = Paths(this)

@@ -1,11 +1,10 @@
 package com.maiboroda.swagger
 
-import org.hamcrest.Matchers
-import org.hamcrest.Matchers.*
-import org.junit.Assert.*
+import org.hamcrest.Matchers.equalTo
+import org.hamcrest.Matchers.nullValue
+import org.junit.Assert.assertThat
 import org.junit.Test
 import javax.validation.constraints.NotNull
-
 
 class PropertyKtTest {
 
@@ -32,5 +31,5 @@ class PropertyKtTest {
 
     }
 
-    data class User(val username:String, @field:NotNull val password:String)
+    data class User(val username:String, @NotNull val password:String)
 }

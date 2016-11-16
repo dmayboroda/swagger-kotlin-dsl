@@ -1,14 +1,15 @@
 package com.maiboroda.swagger
 
-import io.swagger.models.*
-import io.swagger.models.properties.UUIDProperty
+import io.swagger.models.Contact
+import io.swagger.models.License
+import io.swagger.models.Tag
 import org.hamcrest.CoreMatchers.notNullValue
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.hasSize
 import org.junit.Assert.assertThat
 import org.junit.Test
 
-class SwaggerTest {
+class SwaggerKtTest {
 
     @Test
     fun should_create_empty_spec() {
@@ -91,14 +92,20 @@ class SwaggerTest {
                     summary = "Create private customer"
                     description = "You can create private customer data only after customerId initialization"
                     tags = listOf("token", "bearer")
-                    path("token") {
-                        pattern = "xxxx-xxxx-xxxx"
+                    parameters {
+                        path("token") {
+                            pattern = "xxxx-xxxx-xxxx"
+                        }
+                        //header("X-Header") {}
+                        //form()
+                        //cookie()
+                        //query()
+                        body(User::class.java) {
+                        }
                     }
-                    //header("X-Header") {}
-                    //form()
-                    //cookie()
-                    //query()
-                    body(User::class.java) {
+                    responses {
+                        ok("Response description", User::class.java) {
+                        }
                     }
                 }
             }
@@ -108,6 +115,8 @@ class SwaggerTest {
         assertThat(spec.getPath("/token/{token}").post.parameters[0].name, equalTo("token"))
         assertThat(spec.getPath("/token/{token}").post.parameters[0].required, equalTo(true))
         assertThat(spec.getPath("/token/{token}").post.parameters[0].pattern, equalTo("xxxx-xxxx-xxxx"))
+
+        assertThat(spec.getPath("/token/{token}").post.responses["200"]?.description, equalTo("Response description"))
     }
 
     data class User(val username:String, val password:String) {}
@@ -136,14 +145,20 @@ class SwaggerTest {
                     summary = "Create private customer"
                     description = "You can create private customer data only after customerId initialization"
                     tags = listOf("token", "bearer")
-                    path("token") {
-                        pattern = "xxxx-xxxx-xxxx"
+                    parameters {
+                        path("token") {
+                            pattern = "xxxx-xxxx-xxxx"
+                        }
+                        //header("X-Header") {}
+                        //form()
+                        //cookie()
+                        //query()
+                        body(User::class.java) {
+                        }
                     }
-                    //header("X-Header") {}
-                    //form()
-                    //cookie()
-                    //query()
-                    body(User::class.java) {
+                    responses {
+                        ok("Response description", User::class.java) {
+                        }
                     }
                 }
             }

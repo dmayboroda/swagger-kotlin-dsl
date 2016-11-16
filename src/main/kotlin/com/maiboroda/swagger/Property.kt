@@ -14,8 +14,8 @@ fun getProperty(field: Field): Property? {
     val property = when (field.type) {
     // BinaryProperty
     // ByteArrayProperty
-        java.lang.Object::class.java -> ObjectProperty()
-        Integer::class.java -> IntegerProperty()
+        // TODO: java.lang.Object::class.java -> ObjectProperty()
+        Int::class.java -> IntegerProperty()
         Long::class.java -> LongProperty()
         Double::class.java -> DoubleProperty()
         Float::class.java -> FloatProperty()
@@ -37,6 +37,14 @@ fun getProperty(field: Field): Property? {
         name = field.name
         readOnly = Modifier.isFinal(field.modifiers)
         required = field.declaredAnnotations.filter { it.javaClass.isAssignableFrom(NotNull::class.java) }.isNotEmpty()
+    }
+    return property
+}
+
+fun <T> getProperty(clazz:Class<T>): Property? {
+    val property = ObjectProperty()
+    clazz.declaredFields.forEach { field ->
+        property.property(field.name, getProperty(field))
     }
     return property
 }
