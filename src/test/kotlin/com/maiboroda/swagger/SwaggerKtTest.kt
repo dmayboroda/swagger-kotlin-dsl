@@ -87,8 +87,8 @@ class SwaggerKtTest {
     @Test
     fun should_create_spec_with_paths_post() {
         val spec = swagger {
-            paths {
-                post("/token/{token}") {
+            paths("/token/{token}") {
+                post {
                     summary = "Create private customer"
                     description = "You can create private customer data only after customerId initialization"
                     tags = listOf("token", "bearer")
@@ -140,8 +140,8 @@ class SwaggerKtTest {
                     url = "https://www.apache.org/licenses/LICENSE-2.0"
                 }
             }
-            paths {
-                post("/token/{token}") {
+            paths("/token/{token}") {
+                post {
                     summary = "Create private customer"
                     description = "You can create private customer data only after customerId initialization"
                     tags = listOf("token", "bearer")
@@ -159,6 +159,16 @@ class SwaggerKtTest {
                     responses {
                         ok("Response description", User::class.java) {
                         }
+                    }
+                }
+            }
+            paths("/user") {
+                post {
+                    parameters {
+                        body(User::class.java){}
+                    }
+                    responses {
+                        ok("Successful response", User::class.java){}
                     }
                 }
             }

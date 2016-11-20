@@ -52,29 +52,12 @@ fun Swagger.tags(init:Tags.()->Unit) {
     this.tags = tags.tags
 }
 
-class Paths(val swagger:Swagger) {}
-
-/**
- * There is a  minimal required fields to setup for request calls:
- * - at least one valid response
- */
-fun Paths.post(path:String, init:Operation.()->Unit) {
-    val operation = Operation()
-    operation.init()
-    this.swagger.path(path, Path().set("post", operation))
-}
-
-fun <T> getModel(model: Class<T>): ModelImpl {
-    val modelImpl = ModelImpl()
-    model.declaredFields.forEach { m ->
-        modelImpl.addProperty(m.name, getProperty(m))
-    }
-    return modelImpl
-}
-
-fun Swagger.paths(init:Paths.()->Unit) {
-    val paths = Paths(this)
+fun Swagger.paths(url:String, init:Paths.()->Unit) {
+    val path = Path()
+    val paths = Paths(path)
     paths.init()
+    // add path to swagger map
+    this.path(url, path)
 }
 
 fun Swagger.toYml():String {
