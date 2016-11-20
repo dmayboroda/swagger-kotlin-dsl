@@ -3,6 +3,7 @@ package com.maiboroda.swagger
 import io.swagger.models.ModelImpl
 import io.swagger.models.Operation
 import io.swagger.models.parameters.BodyParameter
+import io.swagger.models.parameters.HeaderParameter
 import io.swagger.models.parameters.PathParameter
 
 /**
@@ -30,6 +31,12 @@ fun Parameters.path(pathVariable:String, init: PathParameter.() -> Unit) {
     parameter.init()
     parameter.name = pathVariable
     this.operation.addParameter(parameter)
+}
+
+fun <T> Parameters.header(name:String, type:Class<T>, init:HeaderParameter.() -> Unit) {
+    val headerParameter = HeaderParameter()
+    headerParameter.init()
+    headerParameter.name = name
 }
 
 /**

@@ -149,7 +149,7 @@ class SwaggerKtTest {
                         path("token") {
                             pattern = "xxxx-xxxx-xxxx"
                         }
-                        //header("X-Header") {}
+                        header("X-Header", String::class.java) {}
                         //form()
                         //cookie()
                         //query()
