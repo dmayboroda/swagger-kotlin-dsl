@@ -1,7 +1,5 @@
 package com.maiboroda.swagger
 
-import io.swagger.models.Contact
-import io.swagger.models.License
 import io.swagger.models.Tag
 import org.hamcrest.CoreMatchers.notNullValue
 import org.hamcrest.Matchers.equalTo
@@ -27,40 +25,6 @@ class SwaggerKtTest {
         }
         assertThat(spec.host, equalTo("https://maiboroda.com"))
         assertThat(spec.basePath, equalTo("/v1/api/"))
-    }
-
-    @Test
-    fun should_create_spec_with_info_contact() {
-        val spec = swagger {
-            host = "maiboroda.com"
-            info {
-                version = "1.0"
-                title = "Test API Specification"
-                description = "This is a small test API specification"
-                termsOfService = "Terms"
-                contact {
-                    email = "mayboroda.de@yandex.ru"
-                    name = "Dmitiriy Mayboroda"
-                    url = "http://maiboroda.com"
-                }
-            }
-        }
-
-        assertThat(spec.info.contact, equalTo(Contact().email("mayboroda.de@yandex.ru").name("Dmitiriy Mayboroda").url("http://maiboroda.com")))
-    }
-
-    @Test
-    fun should_create_spec_with_info_license() {
-        val spec = swagger {
-            info {
-                license {
-                    name = "Apache 2.0"
-                    url = "https://www.apache.org/licenses/LICENSE-2.0"
-                }
-            }
-        }
-
-        assertThat(spec.info.license, equalTo(License().name("Apache 2.0").url("https://www.apache.org/licenses/LICENSE-2.0")))
     }
 
     @Test
