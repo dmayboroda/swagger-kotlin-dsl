@@ -3,8 +3,34 @@ package com.maiboroda.swagger
 import io.swagger.models.Info
 import io.swagger.models.Path
 import io.swagger.models.Swagger
-import io.swagger.models.Tag
 import io.swagger.util.Yaml
+
+/**
+ * Main file with all swagger object extension functions
+ *
+ * Swagger object consists of:
+ * - swagger
+ *   - info : Info
+ *   - host: String
+ *   - basePath: String
+ *   - schemes: Array<Scheme>
+ *   - consumes: Array<MimeType>
+ *   - produces: Array<MimeType>
+ *   - paths: List<Operation>
+ *     - parameters: Global parameters for an Operation
+ *     - responses: Responses of an Operation
+*    - securityDefinitions: List<SecurityDefinition>
+ *   - security: ??
+ *   - tags: Map<String, Tag>
+ *   - externalDocs: ???
+ *
+ */
+
+fun swagger(init:Swagger.()->Unit):Swagger {
+    val swagger = Swagger()
+    swagger.init()
+    return swagger
+}
 
 fun Swagger.info(init:Info.()->Unit) {
     val info = Info()
@@ -12,32 +38,7 @@ fun Swagger.info(init:Info.()->Unit) {
     this.info = info
 }
 
-/**
- * Tag in specification must be declared as
- * <code><pre>
- * {
- *  tags {
- *      tag {
- *       name = ""
- *       description = ""
- *      }
- *      tag {
- *       name = ""
- *       description = ""
- *      }
- *  }
- * }
- * </pre></code>
- */
-class Tags(val tags:MutableList<Tag> = mutableListOf()) {
-    fun tag(init:Tag.()->Unit) {
-        val tag = Tag()
-        tag.init()
-        this.tags.add(tag)
-    }
-}
-
-fun Swagger.tags(init:Tags.()->Unit) {
+fun Swagger.tags(init: Tags.()->Unit) {
     val tags = Tags()
     tags.init()
     this.tags = tags.tags
@@ -53,10 +54,4 @@ fun Swagger.paths(url:String, init:Paths.()->Unit) {
 
 fun Swagger.toYml():String {
     return Yaml.mapper().writeValueAsString(this)
-}
-
-fun swagger(init:Swagger.()->Unit):Swagger {
-    val swagger = Swagger()
-    swagger.init()
-    return swagger
 }
