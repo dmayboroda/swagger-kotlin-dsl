@@ -1,7 +1,6 @@
 package com.maiboroda.swagger
 
 import io.swagger.models.Info
-import io.swagger.models.Path
 import io.swagger.models.Swagger
 import io.swagger.util.Yaml
 
@@ -44,12 +43,13 @@ fun Swagger.tags(init: Tags.()->Unit) {
     this.tags = tags.tags
 }
 
-fun Swagger.paths(url:String, init:Paths.()->Unit) {
-    val path = Path()
-    val paths = Paths(path)
+/**
+ * Extension function that is used to construct `paths` section of swagger API
+ * Method just paths swagger instance for further usage
+ */
+fun Swagger.paths(init:Paths.()->Unit) {
+    val paths = Paths(this)
     paths.init()
-    // add path to swagger map
-    this.path(url, path)
 }
 
 fun Swagger.toYml():String {

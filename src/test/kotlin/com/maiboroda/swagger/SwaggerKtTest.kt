@@ -51,36 +51,43 @@ class SwaggerKtTest {
     @Test
     fun should_create_spec_with_paths_post() {
         val spec = swagger {
-            paths("/token/{token}") {
-                post {
-                    summary = "Create private customer"
-                    description = "You can create private customer data only after customerId initialization"
-                    tags = listOf("token", "bearer")
-                    parameters {
-                        path("token") {
-                            pattern = "xxxx-xxxx-xxxx"
+            paths {
+                path("/users") {
+                    post {
+                        summary = "Create user"
+                        description = "Description of creation"
+                        tags = listOf("users", "management")
+                        parameters {
+                            path("token") {
+                                pattern = "xxxx-xxxx-xxxx"
+                            }
+                            body(User::class.java) {}
                         }
-                        //header("X-Header") {}
-                        //form()
-                        //cookie()
-                        //query()
-                        body(User::class.java) {
+
+                        responses {
+                            ok("Response description"){}
                         }
                     }
-                    responses {
-                        ok("Response description", User::class.java) {
+
+                    get {
+                        summary = "List of users"
+                        description = "Returns a list of users sorted by created date"
+                        tags = listOf("users")
+
+                        responses {
+                            ok("Successful result", User::class.java){}
                         }
                     }
                 }
             }
         }
 
-        assertThat(spec.getPath("/token/{token}").post.summary, equalTo("Create private customer"))
-        assertThat(spec.getPath("/token/{token}").post.parameters[0].name, equalTo("token"))
-        assertThat(spec.getPath("/token/{token}").post.parameters[0].required, equalTo(true))
-        assertThat(spec.getPath("/token/{token}").post.parameters[0].pattern, equalTo("xxxx-xxxx-xxxx"))
+        assertThat(spec.getPath("/users").post.summary, equalTo("Create user"))
+        assertThat(spec.getPath("/users").post.parameters[0].name, equalTo("token"))
+        assertThat(spec.getPath("/users").post.parameters[0].required, equalTo(true))
+        assertThat(spec.getPath("/users").post.parameters[0].pattern, equalTo("xxxx-xxxx-xxxx"))
 
-        assertThat(spec.getPath("/token/{token}").post.responses["200"]?.description, equalTo("Response description"))
+        assertThat(spec.getPath("/users").post.responses["200"]?.description, equalTo("Response description"))
     }
 
     data class User(val username:String, val password:String) {}
@@ -104,35 +111,46 @@ class SwaggerKtTest {
                     url = "https://www.apache.org/licenses/LICENSE-2.0"
                 }
             }
-            paths("/token/{token}") {
-                post {
-                    summary = "Create private customer"
-                    description = "You can create private customer data only after customerId initialization"
-                    tags = listOf("token", "bearer")
-                    parameters {
-                        path("token") {
-                            pattern = "xxxx-xxxx-xxxx"
+            paths {
+                path("/token/{token}") {
+                    post {
+                        summary = "Create private customer"
+                        description = "You can create private customer data only after customerId initialization"
+                        tags = listOf("token", "bearer")
+                        parameters {
+                            path("token") {
+                                pattern = "xxxx-xxxx-xxxx"
+                            }
+                            header("X-Header", String::class.java) {}
+                            //form()
+                            //cookie()
+                            //query()
+                            body(User::class.java) {
+                            }
                         }
-                        header("X-Header", String::class.java) {}
-                        //form()
-                        //cookie()
-                        //query()
-                        body(User::class.java) {
-                        }
-                    }
-                    responses {
-                        ok("Response description", User::class.java) {
+                        responses {
+                            ok("Response description", User::class.java) {
+                            }
                         }
                     }
                 }
-            }
-            paths("/user") {
-                post {
-                    parameters {
-                        body(User::class.java){}
+                path("/user") {
+                    post {
+                        parameters {
+                            body(User::class.java) {}
+                        }
+                        responses {
+                            ok("Successful response") {}
+                        }
                     }
-                    responses {
-                        ok("Successful response", User::class.java){}
+                    get {
+                        summary = "List of users"
+                        description = "Returns a list of users sorted by created date"
+                        tags = listOf("users")
+
+                        responses {
+                            ok("Successful result", User::class.java){}
+                        }
                     }
                 }
             }

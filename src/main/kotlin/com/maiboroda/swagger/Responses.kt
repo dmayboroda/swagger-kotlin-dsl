@@ -36,7 +36,7 @@ fun Operation.responses(init:Responses.()->Unit) {
  * @param scheme java class of a return value
  * @param init receiver for swagger response object
  */
-fun <T> Responses.ok(description:String, scheme:Class<T>, init:Response.()->Unit) {
+fun Responses.ok(description:String, scheme:Class<*> = Unit::class.java, init:Response.()->Unit) {
     val response = Response()
     response.init()
     response.description = description
