@@ -1,5 +1,6 @@
 package com.maiboroda.swagger
 
+import io.swagger.models.HttpMethod
 import io.swagger.models.Operation
 import io.swagger.models.Path
 import io.swagger.models.Swagger
@@ -21,7 +22,16 @@ import io.swagger.models.Swagger
  * }
  * ```
  */
-class Paths(val swagger:Swagger) {}
+class Paths(val swagger:Swagger) {
+    companion object Operations {
+        fun addMethod(path:Path, method:HttpMethod, init:Operation.()->Unit):Operation {
+            val operation = Operation()
+            operation.init()
+            path.set(method.name.toLowerCase(), operation)
+            return operation
+        }
+    }
+}
 
 fun Paths.path(url:String, init:Path.()->Unit):Path {
     val path = Path()
@@ -42,18 +52,33 @@ fun Paths.path(url:String, operations:Map<String, Operation>):Path {
  * - at least one valid response
  */
 fun Path.post(init: Operation.()->Unit):Operation {
-    val operation = Operation()
-    operation.init()
-    this.set("post", operation)
-    return operation
+    return Paths.addMethod(this, HttpMethod.POST, init)
 }
 
 fun Path.get(init:Operation.()->Unit):Operation {
-    val operation = Operation()
-    operation.init()
-    this.set("get", operation)
-    return operation
+    return Paths.addMethod(this, HttpMethod.GET, init)
 }
+
+fun Path.head(init:Operation.()->Unit):Operation {
+    return Paths.addMethod(this, HttpMethod.HEAD, init)
+}
+
+fun Path.put(init:Operation.()->Unit):Operation {
+    return Paths.addMethod(this, HttpMethod.PUT, init)
+}
+// TODO: need tests for all these methods, but I need to have data providers in tests
+fun Path.patch(init:Operation.()->Unit):Operation {
+    return Paths.addMethod(this, HttpMethod.PATCH, init)
+}
+
+fun Path.delete(init:Operation.()->Unit):Operation {
+    return Paths.addMethod(this, HttpMethod.DELETE, init)
+}
+
+fun Path.options(init:Operation.()->Unit):Operation {
+    return Paths.addMethod(this, HttpMethod.OPTIONS, init)
+}
+
 
 /**
  * Function that can be used to construct an `Operation` object that can be assigned
