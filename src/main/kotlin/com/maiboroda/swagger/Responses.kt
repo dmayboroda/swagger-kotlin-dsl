@@ -14,10 +14,23 @@ import io.swagger.models.Response
  *       conflict("Resource in an inpropriate state", Error::class.java)
  *     }
  * ```
+ * Statuses that have there own methods
+ * - 200 : ok
+ * - 201 : created
+ * - 202 : accepted
+ * - 204 : noContent
+ * - 400 : badRequest
+ * - 404 : notFound
+ * - 409 : conflict
+ * - 500 : error/else
+ *
+ * The rest statuses must be set over status(code:HttpCode,...) method
  *
  * @param operation Swagger operation object that contains all response
  */
-class Responses(val operation:Operation) {}
+class Responses(val operation:Operation) {
+    // TODO: generic method to add response
+}
 
 /**
  * Definition of `responses` section for swagger operation
