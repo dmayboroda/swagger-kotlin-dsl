@@ -2,6 +2,7 @@ package com.maiboroda.swagger
 
 import io.swagger.models.Operation
 import io.swagger.models.Response
+import io.swagger.models.properties.StringProperty
 
 /**
  * Builder for responses section
@@ -54,7 +55,23 @@ fun Responses.ok(description:String, scheme:Class<*> = Unit::class.java, init:Re
     response.init()
     response.description = description
     response.schema = getProperty(scheme)
-    // TODO: this.headers =
     // TODO: this.examples =
     this.operation.addResponse("200", response)
+}
+
+fun Responses.created(description: String, urlDescription:String="", init:Response.()->Unit = {}):Response {
+    val response = Response()
+    response.init()
+    response.description = description
+    val locationProperty = StringProperty(StringProperty.Format.URL)
+    locationProperty.description = urlDescription
+    response.addHeader("Location", locationProperty)
+    this.operation.addResponse("201", response)
+    return response
+}
+
+fun Response.headers(init: Headers.()->Unit):Headers {
+    val headers = Headers(this)
+    headers.init()
+    return headers
 }
