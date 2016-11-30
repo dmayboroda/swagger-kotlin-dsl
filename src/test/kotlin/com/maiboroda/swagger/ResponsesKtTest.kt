@@ -9,6 +9,16 @@ import org.junit.Test
 class ResponsesKtTest {
 
     @Test
+    fun should_create_ok_response() {
+        val operation = Operation()
+        val responses = Responses(operation)
+
+        val ok = responses.ok("Response description", String::class.java)
+
+        assertThat(ok, equalTo(operation.responses.get("200")))
+    }
+
+    @Test
     fun should_create_created_response() {
         val operation = Operation()
         val responses = Responses(operation)
@@ -23,7 +33,7 @@ class ResponsesKtTest {
     }
 
     @Test
-    fun should_create_created_resopnse_with_properties() {
+    fun should_create_created_response_with_properties() {
         val operation = Operation()
         val responses = Responses(operation)
 
@@ -36,5 +46,6 @@ class ResponsesKtTest {
 
         assertCreatedHeader(created, operation)
         assertThat(created.headers.get("X-Rate-Limit"), equalTo(header("X-Rate-Limit", "calls per hour allowed by the user", Types.int32).second))
+        assertThat(created.headers.get("X-Expires-After"), equalTo(header("X-Expires-After", "date in UTC when token expires", Types.dateTime).second))
     }
 }

@@ -13,6 +13,8 @@ class Types {
         val double = DoubleProperty()
         val float = FloatProperty()
         val dateTime = DateTimeProperty()
+        val url = StringProperty(StringProperty.Format.URL)
+        var uri = StringProperty(StringProperty.Format.URI)
     }
 
 }
