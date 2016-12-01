@@ -19,9 +19,9 @@ import io.swagger.models.Response
  * - 201 : created
  * - 202 : accepted
  * - 204 : noContent
- * - 302 : found
- * - 303 : seeOther
  * - 400 : badRequest
+ * - 401 : unauthorized
+ * - 403 : forbidden
  * - 404 : notFound
  * - 409 : conflict
  * - 500 : error/else
@@ -81,6 +81,14 @@ fun Responses.noContent(description: String, init: Response.() -> Unit = {}): Re
 
 fun Responses.badRequest(description: String, scheme: Class<*> = Unit::class.java, init: Response.() -> Unit = {}): Response {
     return response(400, description, scheme, init)
+}
+
+fun Responses.unauthorized(description: String, scheme: Class<*> = Unit::class.java, init: Response.() -> Unit = {}): Response {
+    return response(401, description, scheme, init)
+}
+
+fun Responses.forbidden(description: String, scheme: Class<*> = Unit::class.java, init: Response.() -> Unit = {}): Response {
+    return response(403, description, scheme, init)
 }
 
 fun Responses.noFound(description: String, scheme: Class<*> = Unit::class.java, init: Response.() -> Unit = {}): Response {
