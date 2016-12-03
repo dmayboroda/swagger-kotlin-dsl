@@ -7,6 +7,9 @@ All notable changes to this project documented in this file.
 - Info without `vendorExtensions` map
   - License 
   - Contact
+- Security definitions
+- Response definitions
+- Parameters definitions
 - List of Tags without `vendorExtensions` map
 ### Changed
 ### Deprecated
