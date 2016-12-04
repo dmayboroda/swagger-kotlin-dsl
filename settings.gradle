@@ -1,0 +1,2 @@
+rootProject.name = 'swagger2kotlin'
+include 'swagger-kotlin-dsl', 'swagger-kotlin-example', 'swagger-kotlin-ui'

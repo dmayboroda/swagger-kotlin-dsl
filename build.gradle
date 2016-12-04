@@ -12,33 +12,39 @@ buildscript {
     }
 }
 
-apply plugin: 'kotlin'
-apply plugin: 'eclipse'
-apply plugin: 'org.springframework.boot'
+subprojects {
 
-jar {
-    baseName = 'swagger-kotlin-dsl'
+    apply plugin: 'kotlin'
+    apply plugin: 'eclipse'
+    apply plugin: 'org.springframework.boot'
+
     version = '0.0.1-SNAPSHOT'
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    repositories {
+        mavenCentral()
+    }
+
+
+    dependencies {
+        compile('org.springframework.boot:spring-boot-starter')
+        compile('org.springframework.boot:spring-boot-starter-web')
+        compile("org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}")
+
+        compile('io.swagger:swagger-core:1.5.10')
+        compile('io.swagger:swagger-models:1.5.10')
+
+        compile('javax.validation:validation-api')
+
+
+        testCompile('io.swagger:swagger-parser:1.0.23')
+        testCompile('org.springframework.boot:spring-boot-starter-test')
+    }
 }
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-}
-
-
-dependencies {
-    compile('org.springframework.boot:spring-boot-starter')
-    compile('org.springframework.boot:spring-boot-starter-web')
-    compile("org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}")
-
-    compile('io.swagger:swagger-core:1.5.10')
-    compile('io.swagger:swagger-models:1.5.10')
-
-    compile('javax.validation:validation-api')
-
-
-    testCompile('io.swagger:swagger-parser:1.0.23')
-    testCompile('org.springframework.boot:spring-boot-starter-test')
+project(':swagger-kotlin-dsl') {
+    bootRepackage  {
+        enabled = false
+    }
 }
