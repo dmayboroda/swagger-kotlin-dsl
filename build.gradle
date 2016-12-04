@@ -43,8 +43,15 @@ subprojects {
         testCompile('org.springframework.boot:spring-boot-starter-test')
     }
 }
-project(':swagger-kotlin-dsl') {
+project(':sok-dsl') {
     bootRepackage  {
         enabled = false
+    }
+}
+
+project(':sok-example') {
+    dependencies {
+        compile project(':sok-dsl')
+        compile project(':sok-hub')
     }
 }
