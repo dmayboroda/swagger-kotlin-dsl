@@ -1,0 +1,216 @@
+= Petshop API
+Author Name <author@mail.com>
+v1.0, 2016-12-12
+:toc: left
+:source-highlighter: pygments
+:baseUrl: https://petshop.com
+:context: /api/v1
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec est neque, interdum id leo quis, pellentesque luctus metus. Etiam et dui suscipit, ullamcorper lectus eget, scelerisque felis. Nunc massa nunc, egestas id pharetra nec, efficitur varius lectus. Duis vel fringilla velit. Phasellus maximus congue leo. Sed ultricies vel dui ut efficitur. Vivamus vestibulum libero libero, ac aliquam ex laoreet in. Integer dignissim feugiat tellus, non pretium diam mattis eu. Fusce mattis eros vitae luctus tempus. Donec molestie efficitur orci, quis porttitor quam maximus vel. Donec convallis egestas nisl, ut imperdiet tortor placerat non.
+
+IMPORTANT: Terms and conditions
+
+== Security Definitions
+
+A short description for security scheme.
+
+|===
+|Name | In | Type | Description | Configurations
+
+| [[MainSecurity]] MainSecurity
+| header
+| oauth2
+| This security method is used for all customers
+a| flow:: accessCode
+    authUrl:: http://swagger.io/api/oauth/dialog
+    tokenUrl:: http://swagger.io/api/oauth/token
+    scopes::
+        - write:pets - modify pets in your account
+        - read:pets - read your pets
+
+| BackofficeSeurity
+| header
+| basic
+| This security method is used for backoffice usage
+| {empty}
+
+| SecondarySecurity
+| body
+| apiKey
+| This security method is used for backoffice usage
+| {empty}
+
+|===
+
+.MainSecurity Example
+[source, http]
+----
+POST /token
+grant_type=accessCode
+scopes=...
+----
+
+.BackofficeSeurity Example
+[source, bash]
+----
+> curl -u username:password 'http://swagger.io/api/oauth/token'
+----
+
+.SecondarySecurity Example
+[source, http]
+----
+> curl -u username:password 'http://swagger.io/api/oauth/token'
+----
+
+== Pet manipulations
+Description of a chapter
+
+[addPetOperationId]
+=== Add command
+Description of the command
+
+.Request
+[source,http]
+----
+POST /v1/api/petshop HTTP/1.1
+Authorization: Bearer {CUSTOMER_TOKEN}
+Content-Type: application/json
+
+{
+  "firstName" : "Thomas",
+  "lastName" : "Anderson",
+  "birthDate" : "1962-03-11"
+}
+----
+
+.Request Parameter
+<<AddPet>>
+
+.Responses
+|===
+| Code | Description | Body
+
+| 201 | In case of successful pet creation a|
+[source,http]
+----
+HTTP/1.1 201 Created
+----
+
+| 400 | In case of request errors a| <<RequestError>>
+| 401 | In case of authorization error a| <<AuthError>>
+|===
+
+.Example
+[source,bash]
+----
+curl -X POST -H 'Authorization: Bearer {CUSTOMER_TOKEN}' -d '{"firstName":"Thomas", "lastName": "Anderson"}' 'https://petshop.com/api/v1/pets'
+----
+
+=== Get command
+Description of the command
+
+Secured By::
+ <<MainSecurity>>
+
+.Request
+[source,http]
+----
+GET /v1/api/petshop HTTP/1.1
+Authorization: Bearer {CUSTOMER_TOKEN}
+Content-Type: application/json
+----
+
+.Responses
+|===
+| Code | Description | Body
+
+| 200 | In case of successful pet creation a| <<Pet>>
+[source,http]
+----
+HTTP/1.1 200 Created
+
+{
+  "firstName" : "Thomas",
+  "lastName" : "Anderson",
+  "birthDate" : "1962-03-11"
+}
+----
+
+| 404 | In case when resource is not found a| {empty}
+| 401 | In case of authorization error a| <<AuthError>>
+|===
+
+== Definitions
+
+=== Models
+
+[[AddPet]]
+==== AddPet
+|===
+| Name | Type | Format | Required | Description
+
+| firstName
+| String
+|
+| true
+| First name of a new pet
+
+| lastName
+| String
+|
+| true
+| Last name of a new pet
+
+| birthDate
+| String
+| yyyy-MM-dd
+| false
+| Date of birth of the pet in ISO format
+|===
+.Example
+[source,http]
+----
+{
+  "firstName" : "Thomas", // <1>
+  "lastName" : "Anderson", // <2>
+  "birthDate" : "1962-03-11" // <3>
+}
+----
+
+=== Responses
+[[Pet]]
+==== Pet
+|===
+| Name | Type | Format | Required | Description
+
+| firstName
+| String
+|
+| true
+| First name of a new pet
+|===
+=== Errors
+[[AuthError]]
+==== AuthError
+|===
+| Name | Type | Format | Required | Description
+
+| code
+|
+|
+|
+|
+
+|===
+[[RequestError]]
+==== RequestError
+|===
+| Name | Type | Format | Required | Description
+
+| code
+|
+|
+|
+|
+
+|===

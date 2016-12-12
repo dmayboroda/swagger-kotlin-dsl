@@ -48,7 +48,11 @@ project(':sok-dsl') {
         enabled = false
     }
 }
-
+project(':sok-hub') {
+    dependencies {
+        compile('org.asciidoctor:asciidoctorj:1.5.3.1')
+    }
+}
 project(':sok-example') {
     dependencies {
         compile project(':sok-dsl')
